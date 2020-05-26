@@ -1,0 +1,26 @@
+plugins {
+    id 'java'
+}
+
+group 'main.java.socket'
+version '1.0'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+}
+
+jar {
+    manifest {
+        attributes 'Version': version,
+                'Main-Class': 'com.stamanker.socket.App'
+    }
+
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+}

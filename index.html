@@ -1,0 +1,25 @@
+<html>
+<head>
+    <meta keywords='webcam'>
+    <title>webcam</title>
+</head>
+<body bgcolor='black'>
+<img src='/image.jpeg' id='img'>
+<script>
+   var number = 0;
+   var newImage = new Image();
+   newImage.src = "image.jpeg";
+   function updateImage() {
+       if(newImage.complete) {
+           document.getElementById("img").src = newImage.src;
+           number++;
+           newImage = new Image();
+           newImage.src = "image.jpeg?n="+number;
+           console.log(' = ' + number);
+       }
+       setTimeout(updateImage, 500);
+   }
+   updateImage();
+</script>
+</body>
+</html>
