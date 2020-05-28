@@ -11,6 +11,7 @@ public class App {
         }
         System.out.println("starting on port " + port);
         new AcceptFilesSocketServer(port).process();
+        new AcceptFilesSocketServer8082(8082).process();
         new HttpSocketServer(80).process();
         Thread thread = Thread.currentThread();
         synchronized (AcceptFilesSocketServer.class) {

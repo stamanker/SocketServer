@@ -26,8 +26,9 @@ public class HttpSocketServer {
     }
 
     public HttpSocketServer process() throws IOException {
-        AsynchronousServerSocketChannel open = openConnection();
-        final AsynchronousServerSocketChannel listener = open.bind(new InetSocketAddress(port));
+        final AsynchronousServerSocketChannel connection = openConnection();
+        System.out.println("open port " + port);
+        final AsynchronousServerSocketChannel listener = connection.bind(new InetSocketAddress(port));
         listener.accept(null, new CompletionHandler<AsynchronousSocketChannel, Void>() {
             @Override
             public void completed(AsynchronousSocketChannel ch, Void att) {
