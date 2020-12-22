@@ -5,12 +5,13 @@ import java.io.IOException;
 public class App {
 
     public static void main(String[] args) throws IOException {
-        int port = 8081;
-        if(args.length==1) {
-            port = Integer.parseInt(args[0]);
-        }
-        System.out.println("starting on port " + port);
-        new AcceptFilesSocketServer(port).process();
+//        int port = 8081;
+//        if (args.length == 1) {
+//            port = Integer.parseInt(args[0]);
+//        }
+        System.out.println("Starting...");
+//        System.out.println("port " + port);
+//        new AcceptFilesSocketServer(port).process();
         new AcceptFilesSocketServer8082(8082).process();
         new HttpSocketServer(80).process();
         Thread thread = Thread.currentThread();

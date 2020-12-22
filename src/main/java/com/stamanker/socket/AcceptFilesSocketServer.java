@@ -54,6 +54,7 @@ public class AcceptFilesSocketServer {
         ByteBuffer byteBuffer = ByteBuffer.allocate(4096);
         try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
             address = ch.getRemoteAddress().toString().substring(1);
+            System.out.println("Session with " + address);
             ch.write(ByteBuffer.wrap(("Hello, " + address +"\r\n").getBytes()));
             int bytesRead;
             while ((bytesRead = ch.read(byteBuffer).get(1, TimeUnit.MINUTES)) != -1) {

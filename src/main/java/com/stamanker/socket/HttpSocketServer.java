@@ -16,7 +16,7 @@ import java.util.concurrent.TimeoutException;
 
 public class HttpSocketServer {
 
-    public static final int DATA_LIMIT = 4096;
+    public static final int DATA_LIMIT = 4096 * 8;
     public static final String IMAGE_JPEG = "image/jpeg";
     public static final String TEXT_HTML = "text/html";
     private int port;
@@ -68,7 +68,6 @@ public class HttpSocketServer {
                 throw new IllegalStateException("too much data");
             }
             processBytes(ch, bytes);
-            ch.close();
             //System.out.println(sessionId + " End of conversation");
         } catch (TimeoutException e) {
             ch.write(ByteBuffer.wrap(" Timeout\n".getBytes()));
