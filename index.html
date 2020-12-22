@@ -4,22 +4,18 @@
     <title>webcam</title>
 </head>
 <body bgcolor='black'>
-<img src='/image.jpeg' id='img'>
+<img src='/image.jpg' id='img'>
 <script>
    var number = 0;
-   var newImage = new Image();
-   newImage.src = "image.jpeg";
+   var img = document.getElementById('img');
    function updateImage() {
-       if(newImage.complete) {
-           document.getElementById("img").src = newImage.src;
-           number++;
-           newImage = new Image();
-           newImage.src = "image.jpeg?n="+number;
-           console.log(' = ' + number);
-       }
-       setTimeout(updateImage, 200);
+        img.src = "/image.jpg";
+        //console.log(' = ' + number);
    }
-   updateImage();
+   img.onload = function() {
+       setTimeout(updateImage, 200);
+   };
+
 </script>
 </body>
 </html>

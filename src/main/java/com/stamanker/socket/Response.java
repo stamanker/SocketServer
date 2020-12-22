@@ -4,10 +4,10 @@ import java.util.Date;
 
 public abstract class Response {
 
-    private String type;
+    private final String type;
     private byte[] result;
-    private int code;
-    private String msg;
+    private final int code;
+    private final String msg;
 
     public Response(int code, String type, String msg) {
         this.code = code;
@@ -30,6 +30,8 @@ public abstract class Response {
                 "Server: StamankerServer 0.1\n" +
                 "Last-Modified: " + new Date() + "\n" +
                 "Content-Length: " + getResult().length + "\n" +
+                "Cache-Control: no-cache\n" +
+                "Cache-Control: no-store\n" +
                 "Content-Type: " + type + "\n";
 //        if (type.equals("text/html")) {
         response += "Connection: Close\n\n";

@@ -15,7 +15,7 @@ public class App {
         new AcceptFilesSocketServer8082(8082).process();
         new HttpSocketServer(80).process();
         Thread thread = Thread.currentThread();
-        synchronized (AcceptFilesSocketServer.class) {
+        synchronized (HttpSocketServer.class) {
             try {
                 thread.join();
             } catch (Exception e) {

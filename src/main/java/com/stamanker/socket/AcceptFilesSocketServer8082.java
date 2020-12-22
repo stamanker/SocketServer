@@ -1,6 +1,5 @@
 package com.stamanker.socket;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
@@ -15,6 +14,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
@@ -25,7 +25,20 @@ public class AcceptFilesSocketServer8082 {
     private static final int PASSWORD_LENGTH = 6;
     public static final int HEADER_LENGTH = ID_LENGTH + PASSWORD_LENGTH;
     private final int port;
-    private ExecutorService executorService = Executors.newFixedThreadPool(5);
+    Thread.UncaughtExceptionHandler uncaughtExceptionHandler = new Thread.UncaughtExceptionHandler() {
+        @Override
+        public void uncaughtException(Thread t, Throwable e) {
+            e.printStackTrace();
+        }
+    };
+    private final ExecutorService executorService = Executors.newFixedThreadPool(3, new ThreadFactory() {
+        @Override
+        public Thread newThread(Runnable r) {
+            Thread thread = new Thread(r);
+            thread.setUncaughtExceptionHandler(uncaughtExceptionHandler);
+            return thread;
+        }
+    });
 
     public AcceptFilesSocketServer8082(int port) {
         this.port = port;
