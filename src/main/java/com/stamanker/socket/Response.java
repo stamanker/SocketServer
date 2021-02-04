@@ -29,9 +29,8 @@ public abstract class Response {
                 "Date: " + new Date() + "\n" +
                 "Server: StamankerServer 0.1\n" +
                 "Last-Modified: " + new Date() + "\n" +
-                "Content-Length: " + getResult().length + "\n" +
+                //"Content-Length: " + getResult().length + "\n" +
                 "Cache-Control: no-cache\n" +
-                "Cache-Control: no-store\n" +
                 "Content-Type: " + type + "\n";
 //        if (type.equals("text/html")) {
         response += "Connection: Close\n\n";

@@ -10,6 +10,7 @@ import java.nio.channels.CompletionHandler;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -58,17 +59,19 @@ public class HttpSocketServer {
         ByteBuffer byteBuffer = ByteBuffer.allocate(DATA_LIMIT);
         try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
             address = ch.getRemoteAddress().toString().substring(1);
-            int bytesRead = ch.read(byteBuffer).get(5, TimeUnit.SECONDS);
-            byteBuffer.flip();
-            byte[] bytes = new byte[bytesRead];
-            byteBuffer.get(bytes);
-            byteBuffer.clear();
-            byteArrayOutputStream.write(bytes);
-            if (byteArrayOutputStream.size() > DATA_LIMIT) {
-                throw new IllegalStateException("too much data");
+            int bytesRead = ch.read(byteBuffer).get(1, TimeUnit.SECONDS);
+            if (bytesRead!=-1) {
+                byteBuffer.flip();
+                byte[] bytes = new byte[bytesRead];
+                byteBuffer.get(bytes);
+                byteBuffer.clear();
+                byteArrayOutputStream.write(bytes);
+                if (byteArrayOutputStream.size() > DATA_LIMIT) {
+                    throw new IllegalStateException("too much data");
+                }
+                processBytes(ch, bytes);
+                System.out.println(sessionId + " End of conversation");
             }
-            processBytes(ch, bytes);
-            //System.out.println(sessionId + " End of conversation");
         } catch (TimeoutException e) {
             ch.write(ByteBuffer.wrap(" Timeout\n".getBytes()));
             System.out.println(sessionId + " " + address + " Connection timed out, closing connection");
@@ -83,6 +86,7 @@ public class HttpSocketServer {
         } catch (IOException e1) {
             e1.printStackTrace();
         }
+        System.out.println(sessionId + " " + address + " closed connection");
     }
 
     private void processBytes(AsynchronousSocketChannel ch, byte[] result) throws Exception {
@@ -123,6 +127,14 @@ public class HttpSocketServer {
                             return readFile("image.jpg");
                         }
                     };
+                } else if(s[1].equals("/flux")) {
+                    if(Arrays.stream(resultStrs).anyMatch(x->x.startsWith("Accept: text/event-stream"))) {
+                        return new Response(200, TEXT_HTML, "OK") {
+                            public byte[] composeResult() {
+                                return "\n".getBytes();
+                            }
+                        };
+                    }
                 } else if (s[1].startsWith("/favicon")) {
                     return new Response(404, "image/jpeg", "no") {
                         @Override
